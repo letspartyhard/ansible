@@ -1,0 +1,37 @@
+- name: Keepalived
+  hosts: ha1
+  become: yes
+  tasks:
+    - name: Install Keepalived
+      apt:
+        pkg: keepalived
+        state: present
+    - name: Copy conf
+      copy:
+        src: ./keepalived.conf
+        dest: /etc/keepalived
+        mode: 0600
+    - name: Restart Keepalived service
+      ansible.builtin.service:
+        name: keepalived
+        state: restarted
+        enabled: true
+
+- name: Keepalived
+  hosts: ha2
+  become: yes
+  tasks:
+    - name: Install Keepalived
+      apt:
+        pkg: keepalived
+        state: present
+    - name: Copy conf
+      copy:
+        src: ./keepalived2.conf
+        dest: /etc/keepalived/keepalived.conf
+        mode: 0600
+    - name: Restart Keepalived service
+      ansible.builtin.service:
+        name: keepalived
+        state: restarted
+        enabled: true

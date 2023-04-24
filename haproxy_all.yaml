@@ -1,0 +1,18 @@
+- name: Haproxy
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Haproxy
+      apt:
+        pkg: haproxy
+        state: present
+    - name: Copy cfg
+      copy:
+        src: ./haproxy.cfg
+        dest: /etc/haproxy
+        mode: 0777
+    - name: Restart Haproxy service
+      ansible.builtin.service:
+        name: haproxy
+        state: restarted
+        enabled: true

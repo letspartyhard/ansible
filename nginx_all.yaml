@@ -1,0 +1,37 @@
+- name: Nginx
+  hosts: web1
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        pkg: nginx
+        state: present
+    - name: Copy html
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.nginx-debian.html
+        mode: 0777
+    - name: Restart Nginx service
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: true
+
+- name: Nginx
+  hosts: web2
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        pkg: nginx
+        state: present
+    - name: Copy html
+      copy:
+        src: ./index2.html
+        dest: /var/www/html/index.nginx-debian.html
+        mode: 0777
+    - name: Restart Nginx service
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: true
